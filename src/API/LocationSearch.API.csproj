@@ -10,4 +10,12 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Location" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LocationSearch.Application\LocationSearch.Application.csproj" />
+    </ItemGroup>
+
 </Project>
