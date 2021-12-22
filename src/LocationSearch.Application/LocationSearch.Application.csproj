@@ -12,8 +12,4 @@
       <ProjectReference Include="..\LocationSearch.Domain\LocationSearch.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Location\Models\Handlers" />
-    </ItemGroup>
-
 </Project>
