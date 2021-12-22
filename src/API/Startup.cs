@@ -6,6 +6,7 @@ using LocationSearch.Application.Location.Handlers;
 using LocationSearch.Application.Location.Models.Queries;
 using LocationSearch.Application.Location.Models.Queries.Responses;
 using LocationSearch.Application.Location.Services;
+using LocationSearch.Application.Location.Services.Impl;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +46,7 @@ namespace LocationSearch
             services
                 .AddTransient<IRequestHandler<RetrieveLocationsQuery, RetrieveLocationsQueryResponse>,
                     RetrieveLocationsQueryHandler>();
-            services.AddTransient<IRetrieveLocationsAppService, IRetrieveLocationsAppService>();
+            services.AddTransient<IRetrieveLocationsAppService, RetrieveLocationsAppService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
