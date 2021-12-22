@@ -10,6 +10,8 @@ using LocationSearch.Application.Location.Services;
 using LocationSearch.Application.Location.Services.Impl;
 using LocationSearch.Application.Location.Validators;
 using LocationSearch.Domain.Location.Models;
+using LocationSearch.Domain.Location.Services;
+using LocationSearch.Domain.Location.Services.Impl;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +43,13 @@ namespace LocationSearch
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "LocationSearch.API", Version = "v1"});
             });
 
+            RegisterDomainLayerDependencies(services);
             RegisterApplicationLayerDependencies(services);
+        }
+
+        private static void RegisterDomainLayerDependencies(IServiceCollection services)
+        {
+            services.AddTransient<IRetrieveLocationsDomainService, RetrieveLocationsDomainService>();
         }
 
         private static void RegisterApplicationLayerDependencies(IServiceCollection services)
@@ -50,7 +58,7 @@ namespace LocationSearch
                 .AddTransient<IRequestHandler<RetrieveLocationsQuery, RetrieveLocationsQueryResponse>,
                     RetrieveLocationsQueryHandler>();
             services.AddTransient<IRetrieveLocationsAppService, RetrieveLocationsAppService>();
-            services.AddTransient<IRequestValidator<LocationQueryParams>, RetrieveLocationsQueryValidator>();
+            services.AddTransient<IRequestValidator<LocationQueryParams>, RetrieveLocationsQueryValidator>(); ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
