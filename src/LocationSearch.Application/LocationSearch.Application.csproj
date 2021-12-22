@@ -9,6 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Core.Patterns\Core.Patterns.csproj" />
       <ProjectReference Include="..\LocationSearch.Domain\LocationSearch.Domain.csproj" />
     </ItemGroup>
 
