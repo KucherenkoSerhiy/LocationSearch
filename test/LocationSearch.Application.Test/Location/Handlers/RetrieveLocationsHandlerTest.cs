@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using LocationSearch.Application.Location.Models.Handlers;
+using LocationSearch.Application.Location.Handlers;
 using LocationSearch.Application.Location.Models.Queries;
 using LocationSearch.Application.Location.Models.Queries.Responses;
-using LocationSearch.Application.Location.Models.Services;
+using LocationSearch.Application.Location.Services;
 using LocationSearch.Domain.Location.Models;
 using Moq;
 using NUnit.Framework;

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using LocationSearch.Domain.Location.Models;
 
-namespace LocationSearch.Application.Location.Models.Services
+namespace LocationSearch.Application.Location.Services
 {
     public interface IRetrieveLocationsAppService
     {

@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using LocationSearch.Application.Location.Models.Queries;
 using LocationSearch.Application.Location.Models.Queries.Responses;
-using LocationSearch.Application.Location.Models.Services;
+using LocationSearch.Application.Location.Services;
 using MediatR;
 
-namespace LocationSearch.Application.Location.Models.Handlers
+namespace LocationSearch.Application.Location.Handlers
 {
     public class RetrieveLocationsQueryHandler : IRequestHandler<RetrieveLocationsQuery, RetrieveLocationsQueryResponse>
     {
