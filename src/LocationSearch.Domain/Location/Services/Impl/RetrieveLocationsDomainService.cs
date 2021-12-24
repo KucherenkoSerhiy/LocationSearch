@@ -1,27 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using LocationSearch.Domain.Location.Collections;
 using LocationSearch.Domain.Location.Models;
 
 namespace LocationSearch.Domain.Location.Services.Impl
 {
     public class RetrieveLocationsDomainService: IRetrieveLocationsDomainService
     {
-        private readonly IRetrieveQueryBuilder<LocationQueryParams, string> _queryBuilder;
-        private readonly IRetrieveQueryRunner<string, List<Models.Location>> _queryRunner;
+        private readonly IRetrieveLocationsData<LocationQueryParams> _locationsData;
+        private readonly ILocationCollection _locationCollection;
 
         public RetrieveLocationsDomainService(
-            IRetrieveQueryBuilder<LocationQueryParams, string> queryBuilder,
-            IRetrieveQueryRunner<string, List<Models.Location>> queryRunner)
+            IRetrieveLocationsData<LocationQueryParams> locationsData,
+            ILocationCollection locationCollection)
         {
-            _queryBuilder = queryBuilder;
-            _queryRunner = queryRunner;
+            _locationsData = locationsData;
+            _locationCollection = locationCollection;
         }
         
         public async Task<List<Models.Location>> Retrieve(LocationQueryParams parameters)
         {
-            var query = await _queryBuilder.Build(parameters);
-            var result = await _queryRunner.Run(query);
-            return result;
+            await _locationsData.Read(parameters);
+            return _locationCollection.Values;
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class LocationFilterValues
     {
-        public double Distance { get; set; }
+        public double ThresholdDistance { get; set; }
         public int MaxNumberOfResults { get; set; }
     }
 }

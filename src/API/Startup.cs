@@ -9,9 +9,16 @@ using LocationSearch.Application.Location.Models.Queries.Responses;
 using LocationSearch.Application.Location.Services;
 using LocationSearch.Application.Location.Services.Impl;
 using LocationSearch.Application.Location.Validators;
+using LocationSearch.Domain.Location.Collections;
+using LocationSearch.Domain.Location.Collections.Impl;
+using LocationSearch.Domain.Location.Factories;
+using LocationSearch.Domain.Location.Factories.Impl;
 using LocationSearch.Domain.Location.Models;
 using LocationSearch.Domain.Location.Services;
 using LocationSearch.Domain.Location.Services.Impl;
+using LocationSearch.Domain.Location.Specification.SpecificationParameterModels;
+using LocationSearch.Domain.Location.Specifications;
+using LocationSearch.Infrastructure.Location.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,13 +50,10 @@ namespace LocationSearch
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "LocationSearch.API", Version = "v1"});
             });
 
-            RegisterDomainLayerDependencies(services);
             RegisterApplicationLayerDependencies(services);
-        }
-
-        private static void RegisterDomainLayerDependencies(IServiceCollection services)
-        {
-            services.AddTransient<IRetrieveLocationsDomainService, RetrieveLocationsDomainService>();
+            RegisterDomainLayerDependencies(services);
+            
+            RegisterInfrastructureLayerDependencies(services);
         }
 
         private static void RegisterApplicationLayerDependencies(IServiceCollection services)
@@ -59,6 +63,20 @@ namespace LocationSearch
                     RetrieveLocationsQueryHandler>();
             services.AddTransient<IRetrieveLocationsAppService, RetrieveLocationsAppService>();
             services.AddTransient<IRequestValidator<LocationQueryParams>, RetrieveLocationsQueryValidator>(); ;
+        }
+
+        private static void RegisterDomainLayerDependencies(IServiceCollection services)
+        {
+            services.AddTransient<IRetrieveLocationsDomainService, RetrieveLocationsDomainService>();
+            services.AddTransient<ISpecification<Domain.Location.Models.Location, LocationSpecificationParameters>, IsValidLocationSpecification>();
+            services.AddTransient<ISpecification<Domain.Location.Models.Location, LocationSpecificationParameters>, IsLocationInRangeSpecification>();
+            services.AddTransient<ILocationCollection, LocationCollection>();
+            services.AddTransient<ILocationFactory, LocationFactory>();
+        }
+
+        private static void RegisterInfrastructureLayerDependencies(IServiceCollection services)
+        {
+            services.AddTransient<IRetrieveLocationsData<LocationQueryParams>, CsvLocationsDataRetriever>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

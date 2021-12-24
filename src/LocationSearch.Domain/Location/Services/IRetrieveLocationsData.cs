@@ -2,8 +2,8 @@
 
 namespace LocationSearch.Domain.Location.Services
 {
-    public interface IRetrieveQueryRunner<TQ, TR>
+    public interface IRetrieveLocationsData<TQ>
     {
-        Task<TR> Run(TQ query);
+        Task Read(TQ query);
     }
 }
