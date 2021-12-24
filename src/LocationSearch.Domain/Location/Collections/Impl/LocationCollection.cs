@@ -18,8 +18,10 @@ namespace LocationSearch.Domain.Location.Collections.Impl
             Values = new List<Models.Location>();
         }
 
-        public void Add(Models.Location value, Models.Location referenceLocation, double thresholdDistance)
+        public void Add(Models.Location value, Models.Location referenceLocation, double thresholdDistance, int maxNumberOfValues)
         {
+            if (Values.Count >= maxNumberOfValues) return;
+            
             var parameters = new LocationSpecificationParameters
             {
                 ReferenceLocation = referenceLocation,

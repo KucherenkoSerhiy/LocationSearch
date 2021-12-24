@@ -20,13 +20,14 @@ namespace LocationSearch.Domain.Test.Location.Collections
             specificationMock.Setup(x => x.IsSatisfiedBy(valueToAdd, It.IsAny<LocationSpecificationParameters>()))
                 .Returns(false);
             
-            sut.Add(valueToAdd, null, 0);
+            sut.Add(valueToAdd, null, 0, 1);
             
             Assert.AreEqual(0, sut.Values.Count);
         }
 
-        [Test]
-        public void Add_ValidValue_Adds()
+        [TestCase(0, TestName = "Equal")]
+        [TestCase(-1, TestName = "Greater than")]
+        public void Add_AlreadyMaxedOut_DoesNotAdd(int maxNumberOfValues)
         {
             var valueToAdd = new Domain.Location.Models.Location();
             
@@ -34,7 +35,22 @@ namespace LocationSearch.Domain.Test.Location.Collections
             specificationMock.Setup(x => x.IsSatisfiedBy(valueToAdd, It.IsAny<LocationSpecificationParameters>()))
                 .Returns(true);
             
-            sut.Add(valueToAdd, null, 0);
+            sut.Add(valueToAdd, null, 0, maxNumberOfValues);
+            
+            Assert.AreEqual(0, sut.Values.Count);
+        }
+
+        [Test]
+        public void Add_ValidValue_Adds()
+        {
+            var maxNumberOfValues = 1;
+            var valueToAdd = new Domain.Location.Models.Location();
+            
+            var sut = this.GetSut(out var specificationMock);
+            specificationMock.Setup(x => x.IsSatisfiedBy(valueToAdd, It.IsAny<LocationSpecificationParameters>()))
+                .Returns(true);
+            
+            sut.Add(valueToAdd, null, 0, maxNumberOfValues);
             
             Assert.AreEqual(1, sut.Values.Count);
             Assert.AreSame(valueToAdd, sut.Values[0]);

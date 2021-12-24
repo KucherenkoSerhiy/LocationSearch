@@ -33,6 +33,7 @@ namespace LocationSearch.Infrastructure.Location.Services
                 Longitude = query.Longitude
             };
             var thresholdDistance = query.LocationFilterValues.ThresholdDistance;
+            var maxNumberOfValues = query.LocationFilterValues.MaxNumberOfResults;
 
             var dbPath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["LocationSearch:Csv:DbPath"]);
             using (var reader = new StreamReader(dbPath))
@@ -40,13 +41,13 @@ namespace LocationSearch.Infrastructure.Location.Services
                 reader.ReadLine(); // skip the first line
                 while (!reader.EndOfStream)
                 {
-                    await ReadLine(reader, referenceLocation, thresholdDistance);
+                    await ReadLine(reader, referenceLocation, thresholdDistance, maxNumberOfValues);
                 }
             }
         }
 
         private async Task ReadLine(StreamReader reader, Domain.Location.Models.Location referenceLocation,
-            double thresholdDistance)
+            double thresholdDistance, int maxNumberOfValues)
         {
             var line = (await reader.ReadLineAsync()).Split(';');
             var values = new Dictionary<string, string>
@@ -56,7 +57,7 @@ namespace LocationSearch.Infrastructure.Location.Services
                 {"Longitude", line[2].Substring(1, line[2].Length-2)},
             };
             var location = _locationFactory.Build(values);
-            _locationCollection.Add(location, referenceLocation, thresholdDistance);
+            _locationCollection.Add(location, referenceLocation, thresholdDistance, maxNumberOfValues);
         }
     }
 }
