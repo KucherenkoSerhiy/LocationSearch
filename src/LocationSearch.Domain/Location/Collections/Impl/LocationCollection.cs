@@ -7,7 +7,7 @@ namespace LocationSearch.Domain.Location.Collections.Impl
 {
     public class LocationCollection : ILocationCollection
     {
-        public List<Models.Location> Values { get; }
+        public SortedList<double, Models.Location> Values { get; }
         private readonly IEnumerable<ISpecification<Models.Location, LocationSpecificationParameters>> _specifications;
 
         public LocationCollection(
@@ -15,20 +15,25 @@ namespace LocationSearch.Domain.Location.Collections.Impl
         {
             _specifications = specifications;
 
-            Values = new List<Models.Location>();
+            Values = new SortedList<double, Models.Location>();
         }
 
         public void Add(Models.Location value, Models.Location referenceLocation, double thresholdDistance, int maxNumberOfValues)
         {
-            if (Values.Count >= maxNumberOfValues) return;
-            
             var parameters = new LocationSpecificationParameters
             {
                 ReferenceLocation = referenceLocation,
                 ThresholdDistance = thresholdDistance
             };
             if (_specifications.All(s => s.IsSatisfiedBy(value, parameters)))
-                Values.Add(value);
+            {
+                var distance = value.CalculateDistance(referenceLocation);
+                
+                Values.Add(distance, value);
+                if (Values.Count > maxNumberOfValues)
+                    Values.RemoveAt(Values.Count-1);
+            }
+                
         }
     }
 }

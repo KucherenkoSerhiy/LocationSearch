@@ -18,7 +18,10 @@ namespace LocationSearch.Domain.Test.Location.Services
         public void Retrieve_ValidRequest_Ok()
         {
             var parameters = new LocationQueryParams();
-            var locations = new List<Domain.Location.Models.Location>();
+            var locations = new SortedList<double, Domain.Location.Models.Location>
+            {
+                {1, new Domain.Location.Models.Location()}
+            };
 
             var sut = GetSut(out var locationsDataMock, out var locationCollectionMock);
             locationsDataMock.Setup(x => x.Read(parameters)).Returns(Task.CompletedTask);
@@ -26,7 +29,7 @@ namespace LocationSearch.Domain.Test.Location.Services
 
             var actualLocations = sut.Retrieve(parameters).Result;
             
-            Assert.AreSame(locations, actualLocations);
+            Assert.AreEqual(1, actualLocations.Count);
             
             locationsDataMock.Verify(x => x.Read(parameters), Times.Once);
             locationCollectionMock.VerifyGet(x => x.Values, Times.Once);

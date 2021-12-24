@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LocationSearch.Domain.Location.Collections;
 using LocationSearch.Domain.Location.Models;
@@ -21,7 +22,7 @@ namespace LocationSearch.Domain.Location.Services.Impl
         public async Task<List<Models.Location>> Retrieve(LocationQueryParams parameters)
         {
             await _locationsData.Read(parameters);
-            return _locationCollection.Values;
+            return _locationCollection.Values.Values.ToList();
         }
     }
 }
