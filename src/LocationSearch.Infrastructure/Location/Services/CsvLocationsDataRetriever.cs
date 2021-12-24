@@ -37,6 +37,7 @@ namespace LocationSearch.Infrastructure.Location.Services
             var dbPath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["LocationSearch:Csv:DbPath"]);
             using (var reader = new StreamReader(dbPath))
             {
+                reader.ReadLine(); // skip the first line
                 while (!reader.EndOfStream)
                 {
                     await ReadLine(reader, referenceLocation, thresholdDistance);
@@ -50,9 +51,9 @@ namespace LocationSearch.Infrastructure.Location.Services
             var line = (await reader.ReadLineAsync()).Split(';');
             var values = new Dictionary<string, string>
             {
-                {"Name", line[0]},
-                {"Latitude", line[1]},
-                {"Longitude", line[2]},
+                {"Name", line[0].Substring(1, line[0].Length-2)}, // skipping first and last characters that are quotemarks (")
+                {"Latitude", line[1].Substring(1, line[1].Length-2)},
+                {"Longitude", line[2].Substring(1, line[2].Length-2)},
             };
             var location = _locationFactory.Build(values);
             _locationCollection.Add(location, referenceLocation, thresholdDistance);

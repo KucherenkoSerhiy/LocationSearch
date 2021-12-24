@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Patterns;
 using LocationSearch.Application.Location.Handlers;
 using LocationSearch.Application.Location.Models.Queries;
@@ -22,12 +18,9 @@ using LocationSearch.Infrastructure.Location.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace LocationSearch
@@ -49,6 +42,8 @@ namespace LocationSearch
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "LocationSearch.API", Version = "v1"});
             });
+            
+            services.AddMediatR(typeof(Startup));
 
             RegisterApplicationLayerDependencies(services);
             RegisterDomainLayerDependencies(services);
@@ -70,7 +65,7 @@ namespace LocationSearch
             services.AddTransient<IRetrieveLocationsDomainService, RetrieveLocationsDomainService>();
             services.AddTransient<ISpecification<Domain.Location.Models.Location, LocationSpecificationParameters>, IsValidLocationSpecification>();
             services.AddTransient<ISpecification<Domain.Location.Models.Location, LocationSpecificationParameters>, IsLocationInRangeSpecification>();
-            services.AddTransient<ILocationCollection, LocationCollection>();
+            services.AddScoped<ILocationCollection, LocationCollection>();
             services.AddTransient<ILocationFactory, LocationFactory>();
         }
 

@@ -24,11 +24,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CF8B578B-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Patterns", "src\Core.Patterns\Core.Patterns.csproj", "{7A4CA9EB-4956-449D-9807-74F1CF43C349}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{0A43C70C-3EDF-4C65-971C-BABA1500F257}"
-ProjectSection(SolutionItems) = preProject
-	data\locations.csv = data\locations.csv
-EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
